@@ -7,6 +7,7 @@ import { Chevron, GroupedCard, ListItem, RowBody, RowIcon } from "@/components/u
 import { ModalCard, ModalOverlay } from "@/components/ui/modal";
 import { GroupLabel, PageContent, PageHeader } from "@/components/ui/page";
 import { useLogout } from "@/hooks/queries";
+import { useInstallApp } from "@/hooks/useInstallApp";
 import { useProfile } from "@/hooks/useProfile";
 
 const businessLinks = [
@@ -41,6 +42,7 @@ export default function MenuPage() {
   const chat = useChat();
   const profile = useProfile();
   const [signOutOpen, setSignOutOpen] = useState(false);
+  const app = useInstallApp();
 
   const logout = useLogout();
   const confirmSignOut = () =>
@@ -78,6 +80,12 @@ export default function MenuPage() {
         <GroupedCard>
           <MenuLink to="/profile" title="Profile Details" subtitle={`${profile.businessName} · ${profile.fullName}`} />
         </GroupedCard>
+
+        {app.canInstall && (
+          <Button className="mt-5" onClick={() => void app.install()}>
+            Install Stash app
+          </Button>
+        )}
 
         <GroupLabel>More</GroupLabel>
         <GroupedCard>

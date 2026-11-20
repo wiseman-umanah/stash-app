@@ -29,7 +29,7 @@ import { SheetController } from "./sheet-controller";
 import { chipButton, dropdownItem, dropdownMenu } from "./styles";
 import { useVoiceRecorder } from "./useVoiceRecorder";
 
-const DESKTOP_QUERY = "(min-width: 1024px)";
+const DESKTOP_QUERY = "(min-width: 1280px)"; // chat docked open from here up
 
 const roundButton = "flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full p-0";
 
@@ -171,13 +171,13 @@ export function ChatSheet() {
             <StashAvatar className="h-[26px] w-[26px] rounded-[8px]" imgClassName="h-3.5 w-3.5" />
             <span className="font-display text-[15px] font-bold text-ink">Stash</span>
           </div>
-          <button type="button" className={cn(chipButton, "lg:invisible")} onClick={() => chat.collapse()} aria-label="Collapse">
+          <button type="button" className={cn(chipButton, "xl:invisible")} onClick={() => chat.collapse()} aria-label="Collapse">
             <ChevronDownIcon />
           </button>
         </div>
 
         {/* grab handle: padding (not margin) so the whole strip is draggable */}
-        <div ref={handleEl} className="cursor-grab pt-0.5 pb-1.5 group-[.expanded]:pt-2 group-[.expanded]:pb-0 lg:hidden" aria-hidden="true">
+        <div ref={handleEl} className="cursor-grab pt-0.5 pb-1.5 group-[.expanded]:pt-2 group-[.expanded]:pb-0 xl:hidden" aria-hidden="true">
           <div className="mx-auto h-1 w-[34px] rounded-[3px] bg-border" />
         </div>
 
@@ -198,8 +198,8 @@ export function ChatSheet() {
           className={cn(
             "fixed inset-0 z-35 bg-[rgba(10,25,19,0.42)] transition-opacity duration-[250ms] ease-in-out",
             "desk:right-auto desk:left-1/2 desk:w-full desk:max-w-[480px] desk:-translate-x-1/2",
-            // desktop: stays inside the docked chat panel
-            "lg:absolute lg:right-0 lg:left-0 lg:w-auto lg:max-w-none lg:translate-x-0",
+            // wide app: stays inside the chat panel
+            "md:absolute md:right-0 md:left-0 md:w-auto md:max-w-none md:translate-x-0",
             historyOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
           )}
         >

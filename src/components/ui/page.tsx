@@ -37,7 +37,7 @@ export function PageHeader({
  * content never sits underneath it.
  */
 export function PageContent({ chatPad = true, className, ...rest }: ComponentProps<"div"> & { chatPad?: boolean }) {
-  return <div className={cn("flex-1", chatPad ? "pb-[200px] lg:pb-12" : "pb-6", className)} {...rest} />;
+  return <div className={cn("flex-1", chatPad ? "pb-[200px] xl:pb-12" : "pb-6", className)} {...rest} />;
 }
 
 /** Small grey explainer line at the top of a page. */

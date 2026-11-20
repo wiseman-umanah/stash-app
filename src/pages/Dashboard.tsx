@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <header className="flex shrink-0 items-center justify-between px-0.5 pt-0.5 pb-5 lg:hidden">
+      <header className="flex shrink-0 items-center justify-between px-0.5 pt-0.5 pb-5 md:hidden">
         <div className="flex items-center gap-2.5">
           <div className="block aspect-[397/149] w-11 shrink-0">
             <img src={logoIcon} alt="Stash" className="block h-full w-full" />
@@ -91,7 +91,7 @@ export default function DashboardPage() {
                 <MiniChart bars={d.today.weekBars} />
               </TintCard>
 
-              <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+              <div className="lg:grid lg:grid-cols-2 lg:gap-6 xl:grid-cols-1 2xl:grid-cols-2">
               <div>
               {/* Top products (+ expiry alert row only when something needs attention) */}
               <SectionLabel className="first:mt-[26px]" title="Top products" action={<SectionLink to="/products">See all</SectionLink>} />

@@ -3,6 +3,7 @@ import logoIcon from "@/assets/logo-icon.png";
 import { useChat } from "@/components/chat/chat-context";
 import { SignOutIcon } from "@/components/icons";
 import { useLogout } from "@/hooks/queries";
+import { useInstallApp } from "@/hooks/useInstallApp";
 import { useProfile } from "@/hooks/useProfile";
 import { cn } from "@/lib/cn";
 
@@ -30,15 +31,16 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
     isActive && "bg-accent-tint font-semibold text-primary-dark hover:bg-accent-tint hover:text-primary-dark",
   );
 
-/** Left navigation on wide screens (≥1024px). Phones use the Menu page instead. */
+/** Left navigation on wide screens (≥768px). Phones use the Menu page instead. */
 export function DesktopSidebar() {
   const profile = useProfile();
   const logout = useLogout();
   const chat = useChat();
   const navigate = useNavigate();
+  const app = useInstallApp();
 
   return (
-    <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-border bg-surface px-4 py-6 lg:flex print:hidden">
+    <aside className="sticky top-0 hidden h-dvh w-[220px] shrink-0 flex-col border-r border-border bg-surface px-3.5 py-6 md:flex lg:w-[248px] lg:px-4 print:hidden">
       <div className="mb-7 flex items-center gap-2.5 px-2">
         <img src={logoIcon} alt="" className="block w-11" />
         <div className="min-w-0">
@@ -59,6 +61,15 @@ export function DesktopSidebar() {
           </NavLink>
         ))}
       </nav>
+      {app.canInstall && (
+        <button
+          type="button"
+          onClick={() => void app.install()}
+          className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-[13.5px] font-bold text-white"
+        >
+          Install Stash app
+        </button>
+      )}
       <div className="mt-4 border-t border-border pt-4">
         <div className="mb-2 flex items-center gap-2.5 px-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-primary-dark font-display text-[14px] font-semibold text-white">

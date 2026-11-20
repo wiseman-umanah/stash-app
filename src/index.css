@@ -169,14 +169,40 @@
 }
 
 /* =========================================================
-   Wide desktop (≥1024px), signed-in app only (.app-wide):
-   full-window layout, chat docked as a right-hand panel.
+   Larger screens
    ========================================================= */
-@media (min-width: 1024px) {
+
+/* Signed-in app from 768px: full window, no phone card */
+@media (min-width: 768px) {
   body:has(.app-wide) {
     padding: 0;
     background: var(--color-bg);
   }
+  /* the sidebar replaces back buttons */
+  .app-wide .page-back {
+    visibility: hidden;
+  }
+}
+
+/* Tablets / small laptops: chat floats bottom-right, opens as a side panel */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+  .app-wide .chat-sheet {
+    left: auto;
+    right: 24px;
+    width: 420px;
+    max-width: calc(100vw - 48px);
+    margin: 0;
+  }
+  .app-wide .chat-sheet.expanded {
+    right: 0;
+    width: 440px;
+    border-left: 1px solid var(--color-border);
+    box-shadow: -24px 0 48px -16px rgba(15, 45, 35, 0.18);
+  }
+}
+
+/* Large screens: chat permanently docked on the right */
+@media (min-width: 1280px) {
   .app-wide .chat-sheet,
   .app-wide .chat-sheet.expanded {
     left: auto;
@@ -201,8 +227,12 @@
   .app-wide:has(.chat-sheet) .app-main {
     padding-right: calc(400px + 2.5rem);
   }
-  /* the sidebar replaces back buttons */
-  .app-wide .page-back {
-    visibility: hidden;
+}
+
+/* Login / signup / welcome from 1024px: split screen, no grey page padding */
+@media (min-width: 1024px) {
+  body:has(.app-public) {
+    padding: 0;
+    background: var(--color-bg);
   }
 }
