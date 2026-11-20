@@ -167,3 +167,42 @@
     -webkit-print-color-adjust: exact;
   }
 }
+
+/* =========================================================
+   Wide desktop (≥1024px), signed-in app only (.app-wide):
+   full-window layout, chat docked as a right-hand panel.
+   ========================================================= */
+@media (min-width: 1024px) {
+  body:has(.app-wide) {
+    padding: 0;
+    background: var(--color-bg);
+  }
+  .app-wide .chat-sheet,
+  .app-wide .chat-sheet.expanded {
+    left: auto;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    max-width: none;
+    height: 100dvh;
+    margin: 0;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transform: none !important;
+    transition: none !important;
+  }
+  /* leave room for the docked chat */
+  .app-wide:has(.chat-sheet) .app-main {
+    padding-right: calc(400px + 2.5rem);
+  }
+  /* the sidebar replaces back buttons */
+  .app-wide .page-back {
+    visibility: hidden;
+  }
+}

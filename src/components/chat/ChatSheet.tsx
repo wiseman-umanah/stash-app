@@ -29,6 +29,8 @@ import { SheetController } from "./sheet-controller";
 import { chipButton, dropdownItem, dropdownMenu } from "./styles";
 import { useVoiceRecorder } from "./useVoiceRecorder";
 
+const DESKTOP_QUERY = "(min-width: 1024px)";
+
 const roundButton = "flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full p-0";
 
 /**
@@ -84,8 +86,18 @@ export function ChatSheet() {
     };
   }, [inputRef, sheetRef]);
 
-  // ---- a new page always starts with the compact dock showing ----
+  // ---- wide screens: the chat is a permanently open side panel ----
   useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_QUERY);
+    const apply = () => (mq.matches ? controllerRef.current?.expand() : controllerRef.current?.collapse());
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  // ---- phones: a new page always starts with the compact dock showing ----
+  useEffect(() => {
+    if (window.matchMedia(DESKTOP_QUERY).matches) return;
     controllerRef.current?.collapse();
     controllerRef.current?.reveal();
   }, [pathname]);
@@ -159,13 +171,13 @@ export function ChatSheet() {
             <StashAvatar className="h-[26px] w-[26px] rounded-[8px]" imgClassName="h-3.5 w-3.5" />
             <span className="font-display text-[15px] font-bold text-ink">Stash</span>
           </div>
-          <button type="button" className={chipButton} onClick={() => chat.collapse()} aria-label="Collapse">
+          <button type="button" className={cn(chipButton, "lg:invisible")} onClick={() => chat.collapse()} aria-label="Collapse">
             <ChevronDownIcon />
           </button>
         </div>
 
         {/* grab handle: padding (not margin) so the whole strip is draggable */}
-        <div ref={handleEl} className="cursor-grab pt-0.5 pb-1.5 group-[.expanded]:pt-2 group-[.expanded]:pb-0" aria-hidden="true">
+        <div ref={handleEl} className="cursor-grab pt-0.5 pb-1.5 group-[.expanded]:pt-2 group-[.expanded]:pb-0 lg:hidden" aria-hidden="true">
           <div className="mx-auto h-1 w-[34px] rounded-[3px] bg-border" />
         </div>
 
@@ -186,6 +198,8 @@ export function ChatSheet() {
           className={cn(
             "fixed inset-0 z-35 bg-[rgba(10,25,19,0.42)] transition-opacity duration-[250ms] ease-in-out",
             "desk:right-auto desk:left-1/2 desk:w-full desk:max-w-[480px] desk:-translate-x-1/2",
+            // desktop: stays inside the docked chat panel
+            "lg:absolute lg:right-0 lg:left-0 lg:w-auto lg:max-w-none lg:translate-x-0",
             historyOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
           )}
         >

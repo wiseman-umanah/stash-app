@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <header className="flex shrink-0 items-center justify-between px-0.5 pt-0.5 pb-5">
+      <header className="flex shrink-0 items-center justify-between px-0.5 pt-0.5 pb-5 lg:hidden">
         <div className="flex items-center gap-2.5">
           <div className="block aspect-[397/149] w-11 shrink-0">
             <img src={logoIcon} alt="Stash" className="block h-full w-full" />
@@ -91,8 +91,10 @@ export default function DashboardPage() {
                 <MiniChart bars={d.today.weekBars} />
               </TintCard>
 
+              <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+              <div>
               {/* Top products (+ expiry alert row only when something needs attention) */}
-              <SectionLabel title="Top products" action={<SectionLink to="/products">See all</SectionLink>} />
+              <SectionLabel className="first:mt-[26px]" title="Top products" action={<SectionLink to="/products">See all</SectionLink>} />
               <GroupedCard>
                 {d.topProducts.length === 0 && <EmptyState>No sales recorded yet today.</EmptyState>}
                 {d.topProducts.map((p) => (
@@ -118,14 +120,18 @@ export default function DashboardPage() {
                 )}
               </GroupedCard>
 
+              </div>
+              <div>
               {/* Almost out of stock */}
-              <SectionLabel title="Almost out of stock" action={<SectionLink to="/stock">See all</SectionLink>} />
+              <SectionLabel className="first:mt-[26px]" title="Almost out of stock" action={<SectionLink to="/stock">See all</SectionLink>} />
               <GroupedCard>
                 {d.lowStock.length === 0 && <EmptyState>Everything is well stocked.</EmptyState>}
                 {d.lowStock.slice(0, 3).map((s) => (
                   <StockRow key={s.name} item={s} />
                 ))}
               </GroupedCard>
+              </div>
+              </div>
 
               {d.insight && (
                 <InsightCard

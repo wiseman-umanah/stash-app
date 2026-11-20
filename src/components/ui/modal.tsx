@@ -29,6 +29,8 @@ export function ModalOverlay({
       className={cn(
         "fixed inset-0 z-60 flex items-center justify-center bg-[rgba(10,25,19,0.45)] p-8 transition-opacity duration-200 ease-in-out print:hidden",
         "desk:right-auto desk:left-1/2 desk:w-full desk:max-w-[480px] desk:-translate-x-1/2",
+        // wide desktop app: dim the whole window
+        "lg:right-0 lg:left-0 lg:w-auto lg:max-w-none lg:translate-x-0",
         open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
       )}
     >

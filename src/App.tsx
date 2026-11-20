@@ -50,32 +50,32 @@ export default function App() {
         <Route path="privacy" element={<PrivacyPage />} />
         <Route path="terms" element={<TermsPage />} />
 
-        {/* signed-in app */}
-        <Route element={<RequireAuth />}>
-          <Route path="menu" element={<MenuPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="referrals" element={<ReferralsPage />} />
-          <Route path="camera" element={<CameraPage />} />
-
-          {/* business pages — share the pullable chatbox */}
-          <Route element={<ChatLayout />}>
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="stockrecords" element={<StockRecordsPage />} />
-            <Route path="stock" element={<StockPage />} />
-            <Route path="sales" element={<SalesPage />} />
-            <Route path="expenses" element={<ExpensesPage />} />
-            <Route path="debts" element={<DebtsPage />} />
-            <Route path="suppliers" element={<SuppliersPage />} />
-            <Route path="invoices" element={<InvoicesPage />} />
-            <Route path="reports" element={<ReportsPage />} />
-            <Route path="barcode" element={<BarcodePage />} />
-            <Route path="bank" element={<BankPage />} />
-          </Route>
-        </Route>
-
         <Route path="chat" element={<Navigate to="/dashboard?openChat=1" replace />} />
         <Route path="*" element={<NotFoundPage />} />
+      </Route>
+
+        {/* signed-in app */}
+      <Route element={<RequireAuth />}>
+        <Route path="menu" element={<MenuPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="referrals" element={<ReferralsPage />} />
+        <Route path="camera" element={<CameraPage />} />
+
+        {/* business pages — share the pullable chatbox */}
+        <Route element={<ChatLayout />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="stockrecords" element={<StockRecordsPage />} />
+          <Route path="stock" element={<StockPage />} />
+          <Route path="sales" element={<SalesPage />} />
+          <Route path="expenses" element={<ExpensesPage />} />
+          <Route path="debts" element={<DebtsPage />} />
+          <Route path="suppliers" element={<SuppliersPage />} />
+          <Route path="invoices" element={<InvoicesPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="barcode" element={<BarcodePage />} />
+          <Route path="bank" element={<BankPage />} />
+        </Route>
       </Route>
     </Routes>
   );

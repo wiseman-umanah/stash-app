@@ -23,7 +23,7 @@ export function PageHeader({
   usePageTitle(docTitle ?? title);
   return (
     <div className="flex shrink-0 items-center justify-between px-0.5 pt-0.5 pb-5 print:hidden">
-      <Link to={back} className={squareButton} aria-label="Back">
+      <Link to={back} className={`${squareButton} page-back`} aria-label="Back">
         <BackIcon />
       </Link>
       <h1 className="font-display text-[16px] font-bold text-ink">{title}</h1>
@@ -37,7 +37,7 @@ export function PageHeader({
  * content never sits underneath it.
  */
 export function PageContent({ chatPad = true, className, ...rest }: ComponentProps<"div"> & { chatPad?: boolean }) {
-  return <div className={cn("flex-1", chatPad ? "pb-[200px]" : "pb-6", className)} {...rest} />;
+  return <div className={cn("flex-1", chatPad ? "pb-[200px] lg:pb-12" : "pb-6", className)} {...rest} />;
 }
 
 /** Small grey explainer line at the top of a page. */

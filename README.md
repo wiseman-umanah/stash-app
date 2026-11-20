@@ -57,6 +57,24 @@ against the production database yourself.
 
 Old links from the static version (`/dashboard.html?openChat=1` etc.) still work and redirect to the new routes.
 
+## Creating records
+
+Owners can add records three ways, all backed by `server/services/mutations.ts`, so validation is identical:
+
+- **Forms:** the green **+** on Products (new product), Sales (record a sale), Expenses and Debts (new debt).
+  Each debt has a **Paid** button for repayments.
+- **Chat:** "I sold 2 cartons of Indomie for 27,000", "add a new product…", "Tunde owes me 5,000",
+  "Tunde paid 2,000".
+- **Notebook photo (OCR):** attach or snap a photo in chat. Groq's vision model
+  (`qwen/qwen3.8-27b`, `server/routes/ocr.ts`) reads the lines, Stash shows them, and the AI records them
+  after the owner replies "yes". Photos are resized in the browser to stay under Vercel's 4.5 MB limit.
+
+## Desktop
+
+On screens 1024px and wider, the signed-in app switches to a desktop layout: a sidebar with every
+page, wide content, and the chat docked open on the right. Phones keep the mobile layout. Login and
+signup stay a centred card.
+
 ## Login
 
 Phone number + password. Implemented in `server/auth.ts` using only `node:crypto`, so nothing beyond
