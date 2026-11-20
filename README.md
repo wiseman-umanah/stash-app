@@ -48,6 +48,10 @@ The app is designed for phones. On a desktop, use a narrow window or device mode
    `.env.local`, or connect Neon through Vercel's Storage tab) and **`GROQ_API_KEY`**.
 3. Deploy. Visit `/api/health` to check the API can reach the database (`{"ok":true}`).
 
+The whole API is **one** Vercel Function (`api/router.ts`). The Hobby plan allows at most 12 per deployment
+and every file in `api/` counts, so add new endpoints under `server/routes/` and register them in the
+router, never as new files in `api/`. `vercel.json` rewrites `/api/<path>` to `/api/router?__path=<path>`.
+
 Migrations are **not** run automatically on deploy. After changing the schema, run `pnpm db:migrate`
 against the production database yourself.
 
@@ -70,15 +74,16 @@ Not done yet: password reset (needs SMS or email), and rate-limiting login attem
 ## Project structure
 
 ```
-api/                         Vercel Functions — one file per endpoint (thin wrappers)
+api/router.ts                The single Vercel Function: dispatches every /api/* request
 server/
 ├── db/schema.ts             Database tables (Drizzle) — money stored as integer kobo
 ├── db/client.ts             Neon HTTP driver connection
+├── routes/                  One file per endpoint (thin wrappers), dispatched by api/router.ts
 ├── services/                The queries: dashboard, products, records, reports, bank, profile
 ├── business.ts              Which business is "current" (placeholder until auth)
 ├── http.ts                  route() wrapper, JSON errors
 ├── time.ts                  Africa/Lagos "today" / period filters
-└── dev/vite-api.ts          Serves api/ during `pnpm dev`
+└── dev/vite-api.ts          Serves the API during `pnpm dev`
 drizzle/                     Generated SQL migrations (commit these)
 scripts/                     migrate.ts, seed.ts
 src/

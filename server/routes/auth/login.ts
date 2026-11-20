@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import type { LoginRequest } from "../../src/data/types.js";
-import { normalizePhone, startSession, verifyPassword } from "../../server/auth.js";
-import { getDb, schema } from "../../server/db/client.js";
-import { HttpError, json, readJson, route } from "../../server/http.js";
+import type { LoginRequest } from "../../../src/data/types.js";
+import { normalizePhone, startSession, verifyPassword } from "../../auth.js";
+import { getDb, schema } from "../../db/client.js";
+import { HttpError, json, readJson, route } from "../../http.js";
 
 /** POST /api/auth/login { phone, password } */
 export const POST = route(async (request) => {

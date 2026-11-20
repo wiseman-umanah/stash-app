@@ -1,6 +1,6 @@
-import { getCurrentBusiness } from "../server/business.js";
-import { HttpError, readJson, route } from "../server/http.js";
-import { getBank, reconcileTransaction } from "../server/services/bank.js";
+import { getCurrentBusiness } from "../business.js";
+import { HttpError, readJson, route } from "../http.js";
+import { getBank, reconcileTransaction } from "../services/bank.js";
 
 /** GET /api/bank — connected account + recent transactions */
 export const GET = route(async (request) => getBank(await getCurrentBusiness(request)));

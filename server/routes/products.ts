@@ -1,6 +1,6 @@
-import { getCurrentBusiness } from "../server/business.js";
-import { route } from "../server/http.js";
-import { listProducts, lowStockFrom, publicProduct } from "../server/services/products.js";
+import { getCurrentBusiness } from "../business.js";
+import { route } from "../http.js";
+import { listProducts, lowStockFrom, publicProduct } from "../services/products.js";
 
 /**
  * GET /api/products            — all products

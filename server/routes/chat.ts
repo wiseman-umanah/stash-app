@@ -1,10 +1,10 @@
-import type { ChatRequest, ChatResponse } from "../src/data/types.js";
-import { buildBusinessContext } from "../server/ai/context.js";
-import { chatCompletion, type ChatMessage } from "../server/ai/groq.js";
-import { systemPrompt } from "../server/ai/prompt.js";
-import { runTool, tools, type ChangedResource } from "../server/ai/tools.js";
-import { getCurrentBusiness } from "../server/business.js";
-import { HttpError, readJson, route } from "../server/http.js";
+import type { ChatRequest, ChatResponse } from "../../src/data/types.js";
+import { buildBusinessContext } from "../ai/context.js";
+import { chatCompletion, type ChatMessage } from "../ai/groq.js";
+import { systemPrompt } from "../ai/prompt.js";
+import { runTool, tools, type ChangedResource } from "../ai/tools.js";
+import { getCurrentBusiness } from "../business.js";
+import { HttpError, readJson, route } from "../http.js";
 
 const MAX_MESSAGES = 12; // recent turns sent to the model (token budget)
 const MAX_CHARS = 1500; // per message

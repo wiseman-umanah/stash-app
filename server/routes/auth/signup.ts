@@ -1,7 +1,7 @@
-import type { SignupRequest } from "../../src/data/types.js";
-import { hashPassword, normalizePhone, startSession, validatePassword } from "../../server/auth.js";
-import { getDb, schema } from "../../server/db/client.js";
-import { HttpError, json, readJson, route } from "../../server/http.js";
+import type { SignupRequest } from "../../../src/data/types.js";
+import { hashPassword, normalizePhone, startSession, validatePassword } from "../../auth.js";
+import { getDb, schema } from "../../db/client.js";
+import { HttpError, json, readJson, route } from "../../http.js";
 import { eq } from "drizzle-orm";
 
 const text = (v: unknown, field: string, max = 80) => {

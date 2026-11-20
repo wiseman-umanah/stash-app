@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
-import type { TranscribeResponse } from "../src/data/types.js";
-import { transcribe } from "../server/ai/groq.js";
-import { getCurrentBusiness } from "../server/business.js";
-import { getDb, schema } from "../server/db/client.js";
-import { HttpError, route } from "../server/http.js";
+import type { TranscribeResponse } from "../../src/data/types.js";
+import { transcribe } from "../ai/groq.js";
+import { getCurrentBusiness } from "../business.js";
+import { getDb, schema } from "../db/client.js";
+import { HttpError, route } from "../http.js";
 
 // Vercel caps request bodies at 4.5 MB; a 2-minute Opus voice note is ~0.5 MB.
 const MAX_BYTES = 4_000_000;
