@@ -3,7 +3,7 @@ import { ChevronRightIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
 import { formatNaira, plural } from "@/lib/format";
 import { stockLine } from "@/lib/products";
-import type { DetectedItem, Product } from "@/data/types";
+import type { Product } from "@/data/types";
 import type { ChatMessage, MessageBody } from "./types";
 
 export function StashAvatar({ className, imgClassName }: { className?: string; imgClassName?: string }) {
@@ -82,8 +82,6 @@ function MessageContent({ body, onChooseProduct }: { body: MessageBody; onChoose
           ))}
         </>
       );
-    case "detected":
-      return <DetectedProducts items={body.items} />;
   }
 }
 
@@ -110,32 +108,6 @@ function ProductCard({ product }: { product: Product }) {
       )}
       <br />
       In stock: {stockLine(product)}
-    </>
-  );
-}
-
-function DetectedProducts({ items }: { items: DetectedItem[] }) {
-  const total = items.reduce((sum, i) => sum + i.qty * i.unitPrice, 0);
-  return (
-    <>
-      <div className="mb-2 font-semibold">I found {items.length} products on this page</div>
-      {items.map((i) => (
-        <div key={i.name} className="flex items-center gap-2.5 border-b border-border py-[9px] last-of-type:border-b-0">
-          <div className="flex h-[18px] w-[18px] shrink-0 items-center justify-center font-display text-[13px] font-bold text-accent">{"✓"}</div>
-          <div className="min-w-0 flex-1">
-            <div className="text-[13.5px] leading-[1.3] font-semibold text-ink">{i.name}</div>
-            <div className="mt-0.5 text-[12px] text-muted">
-              {i.qty} @ {formatNaira(i.unitPrice)}
-            </div>
-          </div>
-          <div className="shrink-0 text-[13px] font-bold text-ink">{formatNaira(i.qty * i.unitPrice)}</div>
-        </div>
-      ))}
-      <div className="mt-1.5 flex items-center justify-between border-t border-border pt-2.5 text-[13.5px] font-bold text-ink">
-        <span>Total</span>
-        <span>{formatNaira(total)}</span>
-      </div>
-      <div className="mt-2.5 text-[12.5px] text-muted">Does this look right?</div>
     </>
   );
 }

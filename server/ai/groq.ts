@@ -170,3 +170,26 @@ export async function transcribe(audio: Blob, filename: string, prompt?: string)
   const data = await request<{ text?: string }>("POST", "/audio/transcriptions", form);
   return (data.text ?? "").trim();
 }
+
+export const VISION_MODEL = process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b";
+
+/** Ask the vision model about an image (data: URL, max ~4 MB). Returns its text answer. */
+export async function readImage(imageDataUrl: string, instruction: string, maxTokens = 900): Promise<string> {
+  const data = await request<{ choices?: { message?: { content?: string } }[] }>("POST", "/chat/completions", {
+    model: VISION_MODEL,
+    temperature: 0,
+    max_completion_tokens: maxTokens,
+    reasoning_format: "hidden",
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "text", text: instruction },
+          { type: "image_url", image_url: { url: imageDataUrl } },
+        ],
+      },
+    ],
+  });
+  // strip any reasoning the model may still inline
+  return (data.choices?.[0]?.message?.content ?? "").replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+}

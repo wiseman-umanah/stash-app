@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AddButton, RecordSaleForm } from "@/components/RecordForms";
 import { Amount, AmountNote, EmptyState, GroupedCard, ListItem, RowBody, RowTrailing } from "@/components/ui/list";
 import { PageContent, PageHeader } from "@/components/ui/page";
 import { QueryView, SkeletonList } from "@/components/ui/states";
@@ -20,10 +21,12 @@ const periods: { value: Period; label: string }[] = [
 export default function SalesPage() {
   const [period, setPeriod] = useState<Period>("today");
   const sales = useSales(period);
+  const [adding, setAdding] = useState(false);
 
   return (
     <>
-      <PageHeader title="Sales" />
+      <PageHeader title="Sales" right={<AddButton label="Record a sale" onClick={() => setAdding(true)} />} />
+      <RecordSaleForm open={adding} onClose={() => setAdding(false)} />
       <PageContent className="pt-1">
         <TabRow tabs={periods} value={period} onChange={setPeriod} />
         <QueryView query={sales} loading={<SkeletonList rows={6} />}>

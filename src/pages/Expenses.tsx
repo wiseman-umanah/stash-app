@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AddButton, AddExpenseForm } from "@/components/RecordForms";
 import { Amount, EmptyState, GroupedCard, ListItem, RowBody, RowTrailing } from "@/components/ui/list";
 import { PageContent, PageHeader, PageIntro } from "@/components/ui/page";
 import { QueryView, SkeletonList } from "@/components/ui/states";
@@ -13,10 +14,12 @@ type Period = "all" | "today" | "7d";
 export default function ExpensesPage() {
   const [period, setPeriod] = useState<Period>("all");
   const expenses = useExpenses(period);
+  const [adding, setAdding] = useState(false);
 
   return (
     <>
-      <PageHeader title="Expenses" />
+      <PageHeader title="Expenses" right={<AddButton label="Add expense" onClick={() => setAdding(true)} />} />
+      <AddExpenseForm open={adding} onClose={() => setAdding(false)} />
       <PageContent className="pt-1">
         <PageIntro>Recorded through your conversations with Stash. This page is for reviewing them.</PageIntro>
         <TabRow

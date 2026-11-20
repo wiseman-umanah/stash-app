@@ -1,5 +1,6 @@
+import { readJson, route } from "../http.js";
+import { createProduct } from "../services/mutations.js";
 import { getCurrentBusiness } from "../business.js";
-import { route } from "../http.js";
 import { listProducts, lowStockFrom, publicProduct } from "../services/products.js";
 
 /**
@@ -11,3 +12,6 @@ export const GET = route(async (request) => {
   if (new URL(request.url).searchParams.get("view") === "low") return lowStockFrom(products);
   return products.map(publicProduct);
 });
+
+/** POST /api/products { name, unit, cost_price, stock?, target_stock?, expiry_date? } */
+export const POST = route(async (request) => createProduct(await getCurrentBusiness(request), await readJson<Record<string, unknown>>(request)));

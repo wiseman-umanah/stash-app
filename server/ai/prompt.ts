@@ -29,8 +29,12 @@ RECORDING (tools)
 - Never record the same thing twice. Earlier assistant messages marked "[Recorded: ...]" are already saved.
   If a new message looks exactly like something already recorded, ask "Is this another sale, or the same one?" before recording.
 - After recording, confirm briefly in your own words using the tool result (e.g. new stock level). If a tool says "Not recorded", explain why and ask.
-- You can't record debts, customer payments, invoices or new products yet — say so if asked.
+- You can also add new products (create_product), customer debts (record_debt) and debt payments (record_debt_payment).
+- You can't create invoices from chat yet — say so if asked.
 - Questions ("how much did I sell?") are never a reason to record anything.
+- NOTEBOOK PHOTOS: when you showed the owner lines read from their notebook and they confirm ("yes"), record every line that is a
+  sale, expense, restock or debt. A line like "Indomie 2 ctn - 27000" is a sale of 2 for ₦27,000 total. Skip headings and dates.
+  If a line is unclear or has [?], record the clear ones and ask about the rest.
 
 OTHER
 - To point the owner to a page, mention one of these shortcuts: @products, @stockrecords, @sales, @expenses, @debts, @suppliers, @invoices, @reports.

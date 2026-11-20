@@ -1,10 +1,9 @@
-import type { DetectedItem, Product } from "@/data/types";
+import type { Product } from "@/data/types";
 
 export type MessageBody =
   | { kind: "text"; text: string }
   | { kind: "product"; product: Product }
   | { kind: "chooser"; query: string; products: Product[] }
-  | { kind: "detected"; items: DetectedItem[] }
   /** "Stash is thinking" indicator while the AI replies */
   | { kind: "typing" };
 

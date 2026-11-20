@@ -20,6 +20,7 @@ import type {
   StockRecord,
   SignupRequest,
   SuppliersResponse,
+  WriteResult,
 } from "@/data/types";
 
 export const queryKeys = {
@@ -105,5 +106,16 @@ export function useLogout() {
       qc.removeQueries({ predicate: (q) => q.queryKey[0] !== "me" });
       qc.setQueryData(meKey, null);
     },
+  });
+}
+
+// ---- Creating records (forms) ----
+
+/** POST a new record, then refresh every screen that shows records. */
+export function useCreateRecord(path: "products" | "sales" | "expenses" | "debts") {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: Record<string, unknown>) => api.post<WriteResult>(path, body),
+    onSuccess: () => qc.invalidateQueries({ predicate: (q) => q.queryKey[0] !== "me" }),
   });
 }

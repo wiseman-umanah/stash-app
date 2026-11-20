@@ -1,7 +1,7 @@
 // STASH — data that is still mock (not in the database yet): chat history,
-// chat helpers, the notebook-photo reading demo and referral stats.
+// chat helpers and referral stats.
 // Everything else is served by the API from Neon — see server/ and api/.
-import type { Conversation, DetectedItem, PageShortcut } from "./types";
+import type { Conversation, PageShortcut } from "./types";
 
 // Referral programme (no backend yet)
 export const referrals = {
@@ -10,13 +10,6 @@ export const referrals = {
   earned: "\u20A69,000",
   pending: "\u20A61,500",
 };
-
-// Mock "detected products" response when a notebook photo is snapped/attached
-export const detectionSample: DetectedItem[] = [
-  { name: "Indomie (1 carton)", qty: 10, unitPrice: 1200 },
-  { name: "Coca-Cola (50cl)", qty: 6, unitPrice: 800 },
-  { name: "Peak Milk (400g)", qty: 4, unitPrice: 900 },
-];
 
 export const chatHistory: Conversation[] = [
   {

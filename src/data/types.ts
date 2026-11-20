@@ -182,12 +182,6 @@ export interface Reports {
 
 // ---- chat-only (still mock data) ----
 
-export interface DetectedItem {
-  name: string;
-  qty: number;
-  unitPrice: number;
-}
-
 export interface HistoryMessage {
   from: "user" | "stash";
   text: string;
@@ -222,7 +216,7 @@ export interface ChatResponse {
   /** what the AI saved to the database this turn, e.g. "Sale: 3 cartons of Indomie for ₦40,500" */
   recorded: string[];
   /** which kinds of records changed, so the app can refresh */
-  changed: ("sales" | "expenses" | "products")[];
+  changed: ("sales" | "expenses" | "products" | "debts")[];
 }
 
 // ---- Auth ----
@@ -246,4 +240,15 @@ export interface Me {
 
 export interface TranscribeResponse {
   text: string;
+}
+
+export interface OcrResponse {
+  /** lines read from the notebook photo; empty if it wasn't a page of records */
+  text: string;
+}
+
+export interface WriteResult {
+  summary: string;
+  detail?: string;
+  changed: ("sales" | "expenses" | "products" | "debts")[];
 }

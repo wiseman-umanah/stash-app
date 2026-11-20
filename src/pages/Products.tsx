@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AddButton, AddProductForm } from "@/components/RecordForms";
 import { EmptyState, GroupedCard, ListItem, RowBody, RowTrailing } from "@/components/ui/list";
 import { PageContent, PageHeader } from "@/components/ui/page";
 import { QueryView, SkeletonList } from "@/components/ui/states";
@@ -25,10 +26,12 @@ function ExpiryBadge({ product: p }: { product: Product }) {
 export default function ProductsPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const products = useProducts();
+  const [adding, setAdding] = useState(false);
 
   return (
     <>
-      <PageHeader title="Products" />
+      <PageHeader title="Products" right={<AddButton label="Add product" onClick={() => setAdding(true)} />} />
+      <AddProductForm open={adding} onClose={() => setAdding(false)} />
       <PageContent className="pt-1">
         <TabRow
           tabs={[
@@ -44,7 +47,7 @@ export default function ProductsPage() {
             return (
               <GroupedCard>
                 {items.length === 0 ? (
-                  <EmptyState>Nothing to show here.</EmptyState>
+                  <EmptyState>{filter === "all" ? "No products yet — tap + to add your first one." : "Nothing to show here."}</EmptyState>
                 ) : (
                   items.map((p) => (
                     <ListItem key={p.id}>

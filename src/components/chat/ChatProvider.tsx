@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { chatHistory, detectionSample, pageShortcuts } from "@/data/mock";
-import type { ChatResponse, ChatTurn, Conversation, Product, TranscribeResponse } from "@/data/types";
+import { chatHistory, pageShortcuts } from "@/data/mock";
+import type { ChatResponse, ChatTurn, Conversation, OcrResponse, Product, TranscribeResponse } from "@/data/types";
 import { useProducts } from "@/hooks/queries";
 import { useProfile } from "@/hooks/useProfile";
 import { api } from "@/lib/api";
-import { formatNaira, getGreeting } from "@/lib/format";
+import { getGreeting } from "@/lib/format";
+import { resizeImage } from "@/lib/image";
 import { searchProducts, stockLine } from "@/lib/products";
 import { ChatContext, type ChatContextValue } from "./chat-context";
 import type { ChatMessage, MessageBody, SheetHandle } from "./types";
@@ -30,9 +31,6 @@ function toTurns(messages: ChatMessage[]): ChatTurn[] {
     if (b.kind === "text") content = m.recorded?.length ? `${b.text}\n[Recorded: ${m.recorded.join("; ")}]` : b.text;
     else if (b.kind === "product") content = `[Showed product details: ${b.product.name}, ${stockLine(b.product)} in stock]`;
     else if (b.kind === "chooser") content = `[Listed products matching "${b.query}": ${b.products.map((p) => p.name).join(", ")}]`;
-    else if (b.kind === "detected") {
-      content = `[Read a notebook photo: ${b.items.map((i) => `${i.qty} ${i.name} @ ${formatNaira(i.unitPrice)}`).join("; ")}]`;
-    }
     if (content) turns.push({ role, content });
   }
   return turns.slice(-HISTORY_TURNS);
@@ -177,6 +175,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     [expand, pushText, showProduct],
   );
 
+  // Notebook photo: read by Groq's vision model, shown back to the owner, and
+  // recorded by the AI only after they confirm ("yes").
   const attachFile = useCallback(
     async (file: File, fromCamera: boolean) => {
       let dataUrl: string;
@@ -188,20 +188,27 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       expand();
       push("user", { kind: "text", text: fromCamera ? "Snapped a photo of my notebook" : `Attached ${file.name}` }, dataUrl);
 
-      if (file.type.startsWith("image/")) {
-        let readingId = "";
-        window.setTimeout(() => {
-          readingId = pushText("stash", "Reading your notebook…");
-        }, 500);
-        window.setTimeout(() => {
-          remove(readingId);
-          push("stash", { kind: "detected", items: detectionSample });
-        }, 1600);
-      } else {
-        window.setTimeout(
-          () => pushText("stash", "Got it — reading this now. I'll update your records once I've matched it to your products."),
-          700,
+      if (!file.type.startsWith("image/")) {
+        pushText("stash", "I can only read photos for now. Snap or attach a picture of the notebook page and I'll read it.");
+        return;
+      }
+      const readingId = pushText("stash", "Reading your notebook…");
+      try {
+        const form = new FormData();
+        form.append("image", await resizeImage(file), "notebook.jpg");
+        const { text } = await api.upload<OcrResponse>("ocr", form);
+        remove(readingId);
+        if (!text) {
+          pushText("stash", "I couldn't find any records in that photo. Try a clearer picture of the page, in good light.");
+          return;
+        }
+        pushText(
+          "stash",
+          `Here's what I read from your notebook:\n\n${text}\n\nShould I record these? Reply "yes", or tell me what to fix.`,
         );
+      } catch (err) {
+        remove(readingId);
+        pushText("stash", err instanceof Error ? err.message : "I couldn't read that photo. Please try again.");
       }
     },
     [expand, push, pushText, remove],

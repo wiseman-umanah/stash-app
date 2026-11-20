@@ -16,6 +16,7 @@ import * as debts from "../server/routes/debts.js";
 import * as expenses from "../server/routes/expenses.js";
 import * as health from "../server/routes/health.js";
 import * as invoices from "../server/routes/invoices.js";
+import * as ocr from "../server/routes/ocr.js";
 import * as products from "../server/routes/products.js";
 import * as reports from "../server/routes/reports.js";
 import * as sales from "../server/routes/sales.js";
@@ -40,6 +41,7 @@ const routes: Record<string, RouteModule> = {
   expenses,
   health,
   invoices,
+  ocr,
   products,
   reports,
   sales,
